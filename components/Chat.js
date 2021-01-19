@@ -21,7 +21,7 @@ export default class Chat extends React.Component {
   if (!firebase.apps.length){
     firebase.initializeApp(
       // insert my Firestore database credentials here!
-      // firebaseConfig =
+       firebaseConfig =
         {
         apiKey: "AIzaSyCQ_70Di8C75S2XuCtyUS-HS21-da4Fpq8",
         authDomain: "chatapp-ee057.firebaseapp.com",
@@ -44,7 +44,7 @@ export default class Chat extends React.Component {
         avatar: "",
         name: "",
       },
-      // uid: 0,
+       uid: 0,
       // loggedInText: "",
       //isConnected: false,
     };
