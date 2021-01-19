@@ -14,23 +14,14 @@ export default class Chat extends React.Component {
   
   constructor() {
     super();
-      this.state = {
-        messages: [],
-        user: {
-          _id:"",
-          avatar: "",
-          name: "",
-        },
-        // uid: 0,
-        loggedInText: "",
-        isConnected: false,
-      };
+
+
   
   // Referencing to the Firestore database. 
   if (!firebase.apps.length){
     firebase.initializeApp(
       // insert my Firestore database credentials here!
-      firebaseConfig =
+      // firebaseConfig =
         {
         apiKey: "AIzaSyCQ_70Di8C75S2XuCtyUS-HS21-da4Fpq8",
         authDomain: "chatapp-ee057.firebaseapp.com",
@@ -40,17 +31,28 @@ export default class Chat extends React.Component {
         messagingSenderId: "1035133300241",
         appId: "1:1035133300241:web:6657ee87bf23bc781ecbb0",
         //measurementId: "G-QVZVZ3F4Z8" is optional
-
         });
       }
       // create a reference to my messages collection of the database
       this.referenceMessages = firebase.firestore().collection("messages");
-    }
 
+    // Initializing state for messages, user, user ID, image and location
+    this.state = {
+      messages: [],
+      user: {
+        _id:"",
+        avatar: "",
+        name: "",
+      },
+      // uid: 0,
+      // loggedInText: "",
+      //isConnected: false,
+    };
+  }
   componentDidMount() {
   //listen to authentication events
-  // use if statement to make sure that references aren't iunidefined or null. (Always check this).
-  if (state.isConnected) {
+  // use if statement to make sure that references aren't undefined or null. (Always check this).
+  //if (state.isConnected) {
     this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
       try {
@@ -67,27 +69,27 @@ export default class Chat extends React.Component {
         name: this.props.route.params.name,
         avatar: 'https://placeimg.com/140/140/any',
       },
-      loggedInText: `${this.props.route.params.name} has entered the chat`,
+      // loggedInText: `${this.props.route.params.name} has entered the chat`,
       messages:[],
     }); 
     // delete original listener as you no longer need it
     this.unsubscribe = this.referenceMessages.onSnapshot(this.onCollectionUpdate);
     });
-    } else {
+    /* }  else {
     this.setState({
       isConnected: false,
       });
       // this.getMessages();
-    }
+  // } */
   }
 
   componentWillUnmount() {
-    if(this.state.isConnected){
+    // if(this.state.isConnected){
   // stop listening to authentication
     this.authUnsubscribe();
   //stop listening for collectionchanges
     this.unsubscribe();
-  }
+  //}
 }
 // function onSend is called upon sending a message.
 // "previousState" references the component's state at the time the change is applied.
@@ -129,7 +131,7 @@ export default class Chat extends React.Component {
     const message = this.state.messages[0];
     this.referenceMessages.add({
       _id: message._id,
-      text: message.text || '',
+      text: message.text || "",
       createdAt: message.createdAt,
       user: message.user,
       uid: this.state.uid,
