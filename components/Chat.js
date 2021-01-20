@@ -45,7 +45,7 @@ export default class Chat extends React.Component {
         name: "",
       },
        uid: 0,
-      // loggedInText: "",
+      loggedInText: "",
       //isConnected: false,
     };
   }
@@ -69,7 +69,7 @@ export default class Chat extends React.Component {
         name: this.props.route.params.name,
         avatar: 'https://placeimg.com/140/140/any',
       },
-      // loggedInText: `${this.props.route.params.name} has entered the chat`,
+      loggedInText: `${this.props.route.params.name} has entered the chat`,
       messages:[],
     }); 
     // delete original listener as you no longer need it
