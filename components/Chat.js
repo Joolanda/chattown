@@ -63,7 +63,7 @@ export default class Chat extends React.Component {
     }
     // update user state with currently active user data
     this.setState({
-      isConnected: true,
+      // isConnected: true,
       user: {
         _id: user.uid, 
         name: this.props.route.params.name,
