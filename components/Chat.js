@@ -66,7 +66,7 @@ export default class Chat extends React.Component {
       // isConnected: true,
       user: {
         _id: user.uid, 
-        name: this.props.route.params.name,
+        name: this.props.navigation.state.params.name,
         avatar: 'https://placeimg.com/140/140/any',
       },
       // loggedInText: `${this.props.route.params.name} has entered the chat`,
