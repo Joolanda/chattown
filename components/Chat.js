@@ -3,7 +3,7 @@ import React from 'react';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 // By importing keyboardAvoidingView you can solve the issue with keyboard position on Android devices
 import { View, Text, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
-// Local Storage Options in React Native with asyncStorage
+// Enable local Storage Options in React Native with asyncStorage
 import AsyncStorage from '@react-native-community/async-storage';
 // establish connection to Firestore 
 const firebase = require('firebase');
