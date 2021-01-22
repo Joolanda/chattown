@@ -1,11 +1,9 @@
 import React from 'react';
-// Bubble is a third party tool to customize styling of the gifted chat bubble 
-import { Bubble, GiftedChat } from 'react-native-gifted-chat';
-// By importing keyboardAvoidingView you can solve the issue with keyboard position on Android devices
+import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { View, Text, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
-// Enable local Storage Options in React Native with asyncStorage
 import AsyncStorage from '@react-native-community/async-storage';
-// establish connection to Firestore 
+import NetInfo from '@react-native-community/netinfo';
+
 const firebase = require('firebase');
 require('firebase/firestore');
 // The application’s main Chat component that renders the chat UI export default class Chat extends Component
@@ -15,9 +13,6 @@ export default class Chat extends React.Component {
   
   constructor() {
     super();
-
-
-  
   // Referencing to the Firestore database. 
   if (!firebase.apps.length){
     firebase.initializeApp(
@@ -34,7 +29,9 @@ export default class Chat extends React.Component {
         //measurementId: "G-QVZVZ3F4Z8" is optional
         });
       }
+
       // create a reference to my messages collection of the database
+      //this.referenceMessageUser = null;
       this.referenceMessages = firebase.firestore().collection("messages");
 
     // Initializing state for messages, user, user ID, image and location
@@ -47,13 +44,32 @@ export default class Chat extends React.Component {
       },
        uid: 0,
       loggedInText: "",
-      //isConnected: false,
+      isConnected: false,
     };
   }
-  componentDidMount() {
-  //listen to authentication events
+
+  // Async functions: the user should be able to read messages offline
+  // You need to create getMessages before you can use it: add it above componentDidMount()
+  // loading messages from local storage 
+  async getMessages() {
+    let messages = '';
+    try {
+      messages = await AsyncStorage.getItem('messages') || [];
+      this.setState({
+        messages: JSON.parse(messages)
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+  componentDidMount() { 
+  //Find out users connection status with NetInfo
+  // Authenticates the user, setting the state to send messages and pass them.
   // use if statement to make sure that references aren't undefined or null. (Always check this).
-  //if (state.isConnected) {
+  NetInfo.fetch().then(state => {
+  if (state.isConnected) {
     this.authUnsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
       try {
@@ -64,7 +80,7 @@ export default class Chat extends React.Component {
     }
     // update user state with currently active user data
     this.setState({
-      // isConnected: true,
+     isConnected: true,
       user: {
         _id: user.uid, 
         name: this.props.route.params.name,
@@ -76,22 +92,23 @@ export default class Chat extends React.Component {
     // delete original listener as you no longer need it
     this.unsubscribe = this.referenceMessages.onSnapshot(this.onCollectionUpdate);
     });
-    /* }  else {
+     }  else {
     this.setState({
       isConnected: false,
       });
-      // this.getMessages();
-  // } */
-  }
+      this.getMessages();
+      } 
+    });
+  } 
 
   componentWillUnmount() {
-    // if(this.state.isConnected){
+     if(this.state.isConnected){
   // stop listening to authentication
     this.authUnsubscribe();
   //stop listening for collectionchanges
     this.unsubscribe();
-  //}
-}
+    }
+  }
 // function onSend is called upon sending a message.
 // "previousState" references the component's state at the time the change is applied.
   onSend(messages = []) {
@@ -99,9 +116,9 @@ export default class Chat extends React.Component {
       messages: GiftedChat.append(previousState.messages, messages),
     }),
     () => {
+      this.saveMessages();
       this.addMessages();
-    }
-    
+    } 
     );
   }
 
@@ -137,7 +154,28 @@ export default class Chat extends React.Component {
       user: message.user,
       uid: this.state.uid,
     });
-  }
+    }
+// Async functions:
+  // save messages to async storage
+  async saveMessages() {
+    try {
+      await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  
+    // delete messages to async storage
+    async deleteMessage() {
+      try {
+        await AsyncStorage.removeItem('messages');
+        this.setState({
+          message: []       
+        })
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
 
   // Customize styling of the chat bubble like background color
   renderBubble(props) {
@@ -152,7 +190,14 @@ export default class Chat extends React.Component {
       />
     )
   }
-
+  renderInputToolbar(props) {
+    if (this.state.isConnected == false) {
+    } else {
+        return( 
+        <InputToolbar {...props} /> 
+      );
+    };
+  }
  // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
   render() {
