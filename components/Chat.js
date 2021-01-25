@@ -111,13 +111,13 @@ export default class Chat extends React.Component {
   } 
 
   componentWillUnmount() {
-     if(this.state.isConnected){
+    //  if(this.state.isConnected){
   // stop listening to authentication
     this.authUnsubscribe();
   //stop listening for collectionchanges
     this.unsubscribe();
     }
-  }
+
 // function onSend is called upon sending a message.
 // "previousState" references the component's state at the time the change is applied.
   onSend(messages = []) {
@@ -232,7 +232,7 @@ export default class Chat extends React.Component {
           messages={messages}
           onSend={messages => this.onSend(messages)}
           user={{
-            _id: uid,
+            _id: 1,
             name: name,
           }}
          />
