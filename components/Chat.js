@@ -11,15 +11,15 @@ require('firebase/firestore');
 export default class Chat extends React.Component {
   // Initializing the state in order to send, receive and display messages
   
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     // Initializing state for messages, user, user ID, image and location
     this.state = {
       messages: [],
       user: {
-        _id:"",
-        avatar: "",
-        name: "",
+        // _id:"",
+        // avatar: "",
+        // name: "",
       },
       uid: 0,
       loggedInText: "",
@@ -71,7 +71,12 @@ export default class Chat extends React.Component {
   // Authenticates the user, setting the state to send messages and pass them.
   // use if statement to make sure that references aren't undefined or null. (Always check this).
   NetInfo.fetch().then(state => {
-    if (state.isConnected) {
+    var isConnected = state.isConnected;
+    this.setState({
+      isConnected
+    });
+    this.getMessages();
+    if (isConnected) {
     this.authUnsubscribe = firebase
       .auth()
       .onAuthStateChanged(async (user) => {
@@ -84,7 +89,6 @@ export default class Chat extends React.Component {
       }
     // update user state with currently active user data
     this.setState({
-     isConnected: true,
       user: {
         _id: user.uid, 
         name: this.props.route.params.name,
