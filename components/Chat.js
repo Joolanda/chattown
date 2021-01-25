@@ -17,9 +17,9 @@ export default class Chat extends React.Component {
     this.state = {
       messages: [],
       user: {
-        // _id:"",
-        // avatar: "",
-        // name: "",
+        _id:"",
+        avatar: "",
+        name: "",
       },
       uid: 0,
       loggedInText: "",
@@ -90,7 +90,7 @@ export default class Chat extends React.Component {
     // update user state with currently active user data
     this.setState({
       user: {
-        _id: user.uid, 
+        _id: uid, 
         name: this.props.route.params.name,
         avatar: 'https://placeimg.com/140/140/any',
       },
@@ -162,7 +162,6 @@ export default class Chat extends React.Component {
       text: message.text || "",
       createdAt: message.createdAt,
       user: message.user,
-      uid: this.state.uid,
     });
     }
 // Async functions:
