@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
-import { View, Text, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, Text, Platform, KeyboardAvoidingView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -75,7 +75,6 @@ export default class Chat extends React.Component {
     this.setState({
       isConnected
     });
-    this.getMessages();
     if (isConnected) {
     this.authUnsubscribe = firebase
       .auth()
