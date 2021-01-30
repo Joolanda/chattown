@@ -89,7 +89,7 @@ export default class Chat extends React.Component {
     // update user state with currently active user data
     this.setState({
       user: {
-        _id: uid, 
+        _id: user.uid, 
         name: this.props.route.params.name,
         avatar: 'https://placeimg.com/140/140/any',
       },
@@ -140,7 +140,7 @@ export default class Chat extends React.Component {
       messages.push({
         _id: data._id,
         text: data.text.toString(),
-        createdAt: data.createdAt.toDate(),
+        createdAt: data.createdAt ? data.createdAt.toDate() : null,
         user: {
           _id: data.user._id,
           name: data.user.name,
