@@ -88,6 +88,7 @@ export default class Chat extends React.Component {
       }
     // update user state with currently active user data
     this.setState({
+      isConnected: true,
       user: {
         _id: user.uid, 
         name: this.props.route.params.name,
@@ -110,7 +111,7 @@ export default class Chat extends React.Component {
   } 
 
   componentWillUnmount() {
-    //  if(this.state.isConnected){
+     if(this.state.isConnected){
   // stop listening to authentication
     this.authUnsubscribe();
   //stop listening for collectionchanges
