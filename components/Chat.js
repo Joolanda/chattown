@@ -196,10 +196,11 @@ export default class Chat extends React.Component {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#000",
+            backgroundColor: "#3dd8ff",
+            //#d8ff3d
           },
           left: {
-            backgroundColor: "#85036b",
+            backgroundColor: "#ff3dd8",
           },
         }}
       />
@@ -208,7 +209,8 @@ export default class Chat extends React.Component {
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
-      return <InputToolbar {...props} />;
+      return <InputToolbar {...props} />
+      ;
     }
   }
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
@@ -216,7 +218,7 @@ export default class Chat extends React.Component {
   render() {
     // Defining variables from Start screen
     let { name, colorSelect } = this.props.route.params;
-    let { messages, user } = this.state;
+    let { messages, uid } = this.state;
     // Set a default username in case the user didn't enter one
     // if (!user || user === '') user.name = 'User';
     // Display user's name in the navbar at the top of the chat screen
@@ -239,7 +241,9 @@ export default class Chat extends React.Component {
           renderBubble={this.renderBubble.bind(this)}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
-          user={user}
+          user={{
+            _id: _id, name: name,
+          }}
         />
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
