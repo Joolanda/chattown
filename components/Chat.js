@@ -241,9 +241,7 @@ export default class Chat extends React.Component {
           renderBubble={this.renderBubble.bind(this)}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
-          user={{
-            _id: _id, name: name,
-          }}
+          user={{_id: uid, name: name}}
         />
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
