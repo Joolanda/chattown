@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
-import { View, Text, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Platform, KeyboardAvoidingView, YellowBox } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -68,14 +68,14 @@ export default class Chat extends React.Component {
 
   componentDidMount() { 
   //Find out users connection status with NetInfo
-  // Authenticates the user, setting the state to send messages and pass them.
-  // use if statement to make sure that references aren't undefined or null. (Always check this).
   NetInfo.fetch().then(state => {
+    // Authenticates the user, setting the state to send messages and pass them.
     var isConnected = state.isConnected;
     this.setState({
       isConnected
     });
     if (isConnected) {
+    // use if statement to make sure that references aren't undefined or null. (Always check this).  
     this.authUnsubscribe = firebase
       .auth()
       .onAuthStateChanged(async (user) => {
@@ -86,6 +86,7 @@ export default class Chat extends React.Component {
           console.log(error.message);
          }
       }
+
     // update user state with currently active user data
     this.setState({
       isConnected: true,
@@ -109,29 +110,6 @@ export default class Chat extends React.Component {
       } 
     });
   } 
-
-  componentWillUnmount() {
-     if(this.state.isConnected){
-  // stop listening to authentication
-    this.authUnsubscribe();
-  //stop listening for collectionchanges
-    this.unsubscribe();
-    }
-
-// function onSend is called upon sending a message.
-// "previousState" references the component's state at the time the change is applied.
-  onSend(messages = []) {
-     this.setState(
-      (previousState) => ({
-        messages: GiftedChat.append(previousState.messages, messages),
-       }),
-      () => {
-        this.addMessages();
-        this.saveMessages();
-      } 
-    );
-  }
-
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
     // go through each document
@@ -153,7 +131,29 @@ export default class Chat extends React.Component {
       messages,
     });
   };
-    
+
+  componentWillUnmount() {
+     if(this.state.isConnected){
+  // stop listening to authentication
+    this.authUnsubscribe();
+  //stop listening for collectionchanges
+    this.unsubscribe();
+    }
+  }
+// function onSend is called upon sending a message.
+// "previousState" references the component's state at the time the change is applied.
+  onSend(messages = []) {
+     this.setState(
+      (previousState) => ({
+        messages: GiftedChat.append(previousState.messages, messages),
+       }),
+      () => {
+        this.addMessages();
+        this.saveMessages();
+      } 
+    );
+  }
+  
   addMessages = () => {
     // add new messages to the chat history. Push messages to firestore database
     const message = this.state.messages[0];
@@ -211,7 +211,7 @@ export default class Chat extends React.Component {
     let { name, colorSelect }= this.props.route.params;
     let { messages, uid } = this.state;
     // Set a default username in case the user didn't enter one
-    // if (!user || user === '') user = 'User';
+    // if (!user || user === '') user.name = 'User';
     // Display user's name in the navbar at the top of the chat screen
     this.props.navigation.setOptions({ title: name });
 
@@ -231,7 +231,7 @@ export default class Chat extends React.Component {
           renderBubble={this.renderBubble.bind(this)}
           messages={messages}
           onSend={messages => this.onSend(messages)}
-          user={{_id: _id, name: name, avatar: avatar}}
+          user={{_id: uid, name: name, avatar: avatar}}
          />
          { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
