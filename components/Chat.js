@@ -66,7 +66,7 @@ export default class Chat extends React.Component {
   };
 
 
-  componentDidMount() { 
+  async componentDidMount() { 
   //Find out users connection status with NetInfo
   NetInfo.fetch().then(state => {
     // Authenticates the user, setting the state to send messages and pass them.
@@ -140,7 +140,7 @@ export default class Chat extends React.Component {
     this.unsubscribe();
     }
   }
-// function onSend is called upon sending a message.
+// function onSend is called upon sending a message in order to store the message
 // "previousState" references the component's state at the time the change is applied.
   onSend(messages = []) {
      this.setState(
@@ -148,10 +148,10 @@ export default class Chat extends React.Component {
         messages: GiftedChat.append(previousState.messages, messages),
        }),
       () => {
-        this.addMessages();
         this.saveMessages();
       } 
     );
+    this.addMessages();
   }
   
   addMessages = () => {
