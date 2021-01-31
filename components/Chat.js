@@ -160,10 +160,7 @@ export default class Chat extends React.Component {
       _id: message._id,
       text: message.text || "",
       createdAt: message.createdAt,
-      user: {
-        _id: message._id,
-        name: user.name,
-      },
+      user: message.user,
     });
   };
 
@@ -197,7 +194,6 @@ export default class Chat extends React.Component {
         wrapperStyle={{
           right: {
             backgroundColor: "#3dd8ff",
-            //#d8ff3d
           },
           left: {
             backgroundColor: "#ff3dd8",
@@ -209,8 +205,7 @@ export default class Chat extends React.Component {
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
-      return <InputToolbar {...props} />
-      ;
+      return <InputToolbar {...props} />;
     }
   }
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
@@ -220,7 +215,7 @@ export default class Chat extends React.Component {
     let { name, colorSelect } = this.props.route.params;
     let { messages, uid } = this.state;
     // Set a default username in case the user didn't enter one
-    // if (!user || user === '') user.name = 'User';
+    //if (!user || user === '') user.name = 'User';
     // Display user's name in the navbar at the top of the chat screen
     this.props.navigation.setOptions({ title: name });
 
@@ -250,5 +245,3 @@ export default class Chat extends React.Component {
     );
   }
 }
-
-
