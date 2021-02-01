@@ -10,7 +10,6 @@ require("firebase/firestore");
 
 export default class Chat extends React.Component {
   // Initializing the state in order to send, receive and display messages
-
   constructor(props) {
     super(props);
     // Initializing state for messages, user, user ID, image and location
@@ -30,20 +29,19 @@ export default class Chat extends React.Component {
       firebase.initializeApp({
         // insert my Firestore database credentials here!
         // firebaseConfig =
-        apiKey: "AIzaSyCQ_70Di8C75S2XuCtyUS-HS21-da4Fpq8",
-        authDomain: "chatapp-ee057.firebaseapp.com",
-        databaseURL: "https://chatapp-ee057.firebaseio.com",
-        projectId: "chatapp-ee057",
-        storageBucket: "chatapp-ee057.appspot.com",
-        messagingSenderId: "1035133300241",
-        appId: "1:1035133300241:web:6657ee87bf23bc781ecbb0",
-        measurementId: "G-QVZVZ3F4Z8",
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional, I have Firebase 7.9.0 installed
-      });
+        
+        apiKey: "AIzaSyB1qQS4FD9L56EFpl_7kZ7K0jEgJXMcnLk",
+        authDomain: "chattownapp.firebaseapp.com",
+        projectId: "chattownapp",
+        storageBucket: "chattownapp.appspot.com",
+        messagingSenderId: "759665951924",
+        appId: "1:759665951924:web:9d5b057d27eb78d51cc3e1",
+        measurementId: "G-9EJECEB77W"
+      })
     }
 
     // create a reference to my messages collection of the database
-    //this.referenceMessageUser = null;
+    this.referenceMessageUser = null;
     this.referenceMessages = firebase.firestore().collection("messages");
 
     // Initializing state for messages, user, user ID, image and location
@@ -90,8 +88,8 @@ export default class Chat extends React.Component {
               isConnected: true,
               user: {
                 _id: user.uid,
-                name: this.props.route.params.name,
                 avatar: "https://placeimg.com/140/140/any",
+                name: this.props.route.params.name,
               },
               loggedInText: `${this.props.route.params.name} has entered the chat`,
               messages: [],
@@ -130,7 +128,7 @@ export default class Chat extends React.Component {
       messages,
     });
   };
-
+// disconnect on closing the app
   componentWillUnmount() {
     if (this.state.isConnected) {
       // stop listening to authentication
@@ -147,10 +145,10 @@ export default class Chat extends React.Component {
         messages: GiftedChat.append(previousState.messages, messages),
       }),
       () => {
+        this.addMessages();
         this.saveMessages();
       }
     );
-    this.addMessages();
   }
 
   addMessages = () => {
@@ -205,9 +203,12 @@ export default class Chat extends React.Component {
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
-      return <InputToolbar {...props} />;
+      return ( 
+      <InputToolbar {...props} />
+      );
     }
   }
+
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
   render() {
@@ -236,12 +237,12 @@ export default class Chat extends React.Component {
           renderBubble={this.renderBubble.bind(this)}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
-          user={{_id: uid, name: name}}
+          user={this.state.user}
         />
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
         ) : null}
       </View>
-    );
+    )
   }
 }
