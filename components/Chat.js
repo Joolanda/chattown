@@ -4,7 +4,7 @@ import { View, Text, Platform, KeyboardAvoidingView } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import CustomActions from "./CustomActions";
-import MapView from 'react-native-maps';
+// import MapView from 'react-native-maps';
 
 const firebase = require("firebase");
 require("firebase/firestore");
