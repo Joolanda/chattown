@@ -3,6 +3,8 @@ import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { View, Text, Platform, KeyboardAvoidingView } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
+import CustomActions from "./CustomActions";
+import MapView from 'react-native-maps';
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -22,6 +24,7 @@ export default class Chat extends React.Component {
       },
       uid: 0,
       loggedInText: "",
+      image: null,
       isConnected: false,
     };
     // Referencing to the Firestore database.
@@ -122,6 +125,7 @@ export default class Chat extends React.Component {
           name: data.user.name,
           avatar: data.user.avatar,
         },
+        image: data.image,
       });
     });
     this.setState({
@@ -159,6 +163,7 @@ export default class Chat extends React.Component {
       text: message.text || "",
       createdAt: message.createdAt,
       user: message.user,
+      image: message.image || "",
     });
   };
 
@@ -208,6 +213,14 @@ export default class Chat extends React.Component {
       );
     }
   }
+  // give CustomAction Class a render function that renders the action button
+  renderCustomActions(props) {
+    return (
+      <CustomActions
+      {...props}
+      />
+    );
+  }
 
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
@@ -235,6 +248,7 @@ export default class Chat extends React.Component {
         <GiftedChat
           renderInputToolbar={this.renderInputToolbar.bind(this)}
           renderBubble={this.renderBubble.bind(this)}
+          renderCustomActions={this.renderCustomActions.bind(this)}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
