@@ -41,35 +41,41 @@ export default class CustomActions extends React.Component {
   
     //Permission request for photo library
   pickImage = async () => {
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-    if(status === 'granted') {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: 'Images',
-      }).catch(error => console.log(error));
+    try {
+      const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+      if(status === 'granted') {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: 'Images',
+        }).catch(error => console.log(error));
  
-      if (!result.cancelled) {
-        this.setState({
-          image: result
-        });  
+        if (!result.cancelled) {
+          const imageUrl = await this.uploadImage(result.uri);
+          this.props.onSend({ image: imageUrl});
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
       }
     }
-  }
 
   // permission request for camera and photo library
   takePhoto = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.MEDIA_LIBRARY);
-    if(status === 'granted') {
+    try {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.MEDIA_LIBRARY);
+      if(status === 'granted') {
       let result = await ImagePicker.launchCameraAsync({
         mediaTypes: 'Images',
       }).catch(error => console.log(error));
  
-      if (!result.cancelled) {
-        this.setState({
-          image: result
-        });  
+        if (!result.cancelled) {
+          const imageUrl = await this.uploadImage(result.uri);
+          this.props.onSend({ image: imageUrl});
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
       }
     }
-  }
 
   // Retrieve image url from user with fetch methode and covert this content into a blob. Create a reference to the file
   // Turn the image file into a blob and retrieve image url from the server with getDownloadURL()
@@ -101,8 +107,8 @@ export default class CustomActions extends React.Component {
         blob.close();
         // to get the image url from storage use async method getDoewnloadURL()
         // upload image with fetch() and blob()
-        const imageURL = await snapshot.ref.getDownloadURL();
-        return imageURL;
+        const imageUrl = await snapshot.ref.getDownloadURL();
+        return imageUrl;
       } catch (error) {
         console.log(error);
       }
