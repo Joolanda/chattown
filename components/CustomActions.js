@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { askAsync } from 'expo-permissions';
 //import * as Location from 'expo-location';
 
 const firebase = require('firebase');
@@ -17,7 +18,7 @@ export default class CustomActions extends React.Component {
   }
 
     onActionPress = () => { 
-      const options = ['Pick a photo from library', 'Take a photo', 'Send location', 'Cancel'];
+      const options = ['Image from library', 'Take a picture', 'Share location', 'Cancel'];
       const cancelButtonIndex = options.length -1;
 
       this.context.actionSheet().showActionSheetWithOptions(
@@ -55,6 +56,59 @@ export default class CustomActions extends React.Component {
     }
   }
 
+  // permission request for camera and photo library
+  takePhoto = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.MEDIA_LIBRARY);
+    if(status === 'granted') {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: 'Images',
+      }).catch(error => console.log(error));
+ 
+      if (!result.cancelled) {
+        this.setState({
+          image: result
+        });  
+      }
+    }
+  }
+
+  // Retrieve image url from user with fetch methode and covert this content into a blob. Create a reference to the file
+  // Turn the image file into a blob and retrieve image url from the server with getDownloadURL()
+  // (upload image to Storage with XMLHttpRequest)
+  uploadImage = async(uri) => {
+    try {
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+          xhr.onload = function() {
+          resolve(xhr.response);
+          };
+          xhr.onerror = function(e) {
+            console.log(e);
+            reject(new TypeError('Network request failed'));
+          };
+          xhr.responseType = 'blob';
+          xhr.open('GET', uri, true);
+          xhr.send(null);
+        });
+        // this will generate a unique filename for each image uploaded
+        // get image name with uriParts
+        const getUriParts = uri.split('/'); 
+        const myImage = getUriParts[getUriParts.lenght -1];
+        //create a reference to the file
+        const ref = firebase.storage().ref().child(`${myImage}`);
+        // put the blob into the just created reference
+        const snapshot = await ref.put(blob);
+        // close the connection
+        blob.close();
+        // to get the image url from storage use async method getDoewnloadURL()
+        // upload image with fetch() and blob()
+        const imageURL = await snapshot.ref.getDownloadURL();
+        return imageURL;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     render() {
       return (
         <TouchableOpacity style={[styles.container]} onPress={this.onActionPress}>
@@ -65,6 +119,7 @@ export default class CustomActions extends React.Component {
       );
     }
   }
+
   
     const styles = StyleSheet.create({
       container: {
@@ -74,7 +129,7 @@ export default class CustomActions extends React.Component {
         marginBottom: 10,
       },
       wrapper: {
-        borderRadius: 13,
+        borderRadius: 15,
         borderColor: '#b2b2b2',
         borderWidth: 2,
         flex: 1,
