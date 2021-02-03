@@ -125,7 +125,8 @@ export default class Chat extends React.Component {
           name: data.user.name,
           avatar: data.user.avatar,
         },
-        image: data.image,
+        image: data.image || "",
+        //location: data.location
       });
     });
     this.setState({
@@ -164,6 +165,7 @@ export default class Chat extends React.Component {
       createdAt: message.createdAt,
       user: message.user,
       image: message.image || "",
+      //location: message.location || null,
     });
   };
 
