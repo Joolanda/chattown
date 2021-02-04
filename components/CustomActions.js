@@ -83,7 +83,7 @@ export default class CustomActions extends React.Component {
       if(status === 'granted') { 
         try {
           let result = await Location.getCurrentPositionAsync({});
-          if(location) {
+          if(result) {
             this.props.onSend({ 
               location: {
                 latitude:location.coords.latitude,
