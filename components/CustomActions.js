@@ -39,7 +39,7 @@ export default class CustomActions extends React.Component {
       );
     };
   
-    //Permission request for photo library
+  //Permission request for photo library
   pickImage = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
@@ -77,6 +77,26 @@ export default class CustomActions extends React.Component {
       }
     }
 
+  // create a get Location method ask users (async) permission to use location
+  getLocation = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if(status === 'granted') { 
+        try {
+          let result = await Location.getCurrentPositionAsync({});
+          if(location) {
+            this.props.onSend({ 
+              location: {
+                latitude:location.coords.latitude,
+                longitude: location.coords.longitude,
+              },
+            });
+          }   
+        } catch (error) {
+        console.log(error);
+      }
+    }  
+  };
+
   // Retrieve image url from user with fetch methode and covert this content into a blob. Create a reference to the file
   // Turn the image file into a blob and retrieve image url from the server with getDownloadURL()
   // (upload image to Storage with XMLHttpRequest)
@@ -113,6 +133,7 @@ export default class CustomActions extends React.Component {
         console.log(error);
       }
     };
+
 
     render() {
       return (

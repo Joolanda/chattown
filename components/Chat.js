@@ -25,6 +25,7 @@ export default class Chat extends React.Component {
       uid: 0, 
       loggedInText: "",
       image: null,
+      location: null,
       isConnected: false,
     };
     // Referencing to the Firestore database.
@@ -126,7 +127,7 @@ export default class Chat extends React.Component {
           avatar: data.user.avatar,
         },
         image: data.image || "",
-        //location: data.location
+        location: data.location,
       });
     });
     this.setState({
@@ -165,7 +166,7 @@ export default class Chat extends React.Component {
       createdAt: message.createdAt,
       user: message.user,
       image: message.image || "",
-      //location: message.location || null,
+      location: message.location || null,
     });
   };
 
@@ -254,6 +255,7 @@ export default class Chat extends React.Component {
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
+          image={this.state.image}
         />
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
