@@ -239,13 +239,9 @@ export default class Chat extends React.Component {
   }
 
   // give CustomAction Class a render function that renders the action button
-  renderCustomActions(props) {
-    return (
-      <CustomActions
-      {...props}
-      />
-    );
-  }
+  renderCustomActions = (props) => {
+    return <CustomActions {...props}/>
+  };
 
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
