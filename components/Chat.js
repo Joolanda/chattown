@@ -271,10 +271,10 @@ export default class Chat extends React.Component {
 
         {/* rendering chat interface with gifted Chat component, a third party tool */}
         <GiftedChat
-          renderInputToolbar={this.renderInputToolbar.bind(this)}
+          renderInputToolbar={this.renderInputToolbar}
           renderBubble={this.renderBubble.bind(this)}
-          renderActions={this.renderCustomActions.bind(this)}
-          renderCustomView={this.renderCustomView.bind(this)}
+          renderCustomActions={this.renderCustomActions}
+          renderCustomView={this.renderCustomView}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
