@@ -68,8 +68,8 @@ export default class CustomActions extends React.Component {
       }).catch(error => console.log(error));
  
         if (!result.cancelled) {
-          const imageUrl = await this.uploadImage(result.uri);
-          this.props.onSend({ image: imageUrl});
+          const imageLink = await this.uploadImage(result.uri);
+          this.props.onSend({ image: imageLink});
           }
         }
       } catch (error) {
