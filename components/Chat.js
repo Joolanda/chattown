@@ -221,7 +221,6 @@ export default class Chat extends React.Component {
    const { currentMessage } = props;
    if (currentMessage.location) {
      return (
-       <View>
         <MapView
             style={{width: 150,
              heigth: 100,
@@ -234,7 +233,6 @@ export default class Chat extends React.Component {
               longitudeDelta: 0.0421,
             }}
           />
-        </View>
       );
 }
 return null;
