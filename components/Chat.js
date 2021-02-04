@@ -236,7 +236,7 @@ export default class Chat extends React.Component {
       );
     }
     return null;
-    }
+  }
 
   // give CustomAction Class a render function that renders the action button
   renderCustomActions(props) {
@@ -271,10 +271,10 @@ export default class Chat extends React.Component {
 
         {/* rendering chat interface with gifted Chat component, a third party tool */}
         <GiftedChat
-          renderInputToolbar={this.renderInputToolbar}
+          renderInputToolbar={this.renderInputToolbar.bind(this)}
           renderBubble={this.renderBubble.bind(this)}
-          renderCustomActions={this.renderCustomActions}
-          renderCustomView={this.renderCustomView}
+          renderCustomActions={this.renderCustomActions.bind(this)}
+          renderCustomView={this.renderCustomView.bind(this)}
           messages={messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
