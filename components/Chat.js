@@ -234,9 +234,9 @@ export default class Chat extends React.Component {
             }}
           />
       );
-}
-return null;
-}
+    }
+    return null;
+    }
 
   // give CustomAction Class a render function that renders the action button
   renderCustomActions(props) {

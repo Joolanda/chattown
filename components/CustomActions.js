@@ -81,22 +81,17 @@ export default class CustomActions extends React.Component {
   getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
       if(status === 'granted') { 
-        try {
-          const location = await Location.getCurrentPositionAsync({});
-          if (location) {
+          let result= await Location.getCurrentPositionAsync({});
+          if (result) {
             this.props.onSend({ 
               location: {
                 latitude:location.coords.latitude,
                 longitude: location.coords.longitude,
               },
-            });
+            })
           }   
-        } catch (error) {
-        console.log(error);
-      }
+        } 
     }  
-  };
-
   // Retrieve image url from user with fetch methode and covert this content into a blob. Create a reference to the file
   // Turn the image file into a blob and retrieve image url from the server with getDownloadURL()
   // (upload image to Storage with XMLHttpRequest)
