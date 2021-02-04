@@ -122,7 +122,7 @@ export default class CustomActions extends React.Component {
         blob.close();
         // to get the image url from storage use async method getDoewnloadURL()
         // upload image with fetch() and blob()
-        const imageUrl = await snapshot.ref.getDownloadURL();
+        const imageURL = await snapshot.ref.getDownloadURL();
         return imageURL;
       } catch (error) {
         console.log(error);
