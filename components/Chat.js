@@ -223,7 +223,7 @@ export default class Chat extends React.Component {
      return (
         <MapView
             style={{width: 150,
-             heigth: 100,
+              height: 100,
               borderRadius: 13,
               margin: 3}}
             region={{
