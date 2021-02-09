@@ -86,8 +86,8 @@ export default class CustomActions extends React.Component {
             this.props.onSend({ 
               location: {
                 latitude:result.coords.latitude,
-                longitude: result.coords.longitude,
-              },
+                longitude: result.coords.longitude
+              }
             })
           }   
         } 
@@ -113,9 +113,9 @@ export default class CustomActions extends React.Component {
         // this will generate a unique filename for each image uploaded
         // get image name with uriParts
         const getUriParts = uri.split('/'); 
-        const myImage = getUriParts[getUriParts.lenght -1];
+        const myImage = getUriParts[getUriParts.length -1];
         //create a reference to the file
-        const ref = firebase.storage().ref().child(`${myImage}`);
+        const ref = firebase.storage().ref().child(`images/${myImage}`);
         // put the blob into the just created reference
         const snapshot = await ref.put(blob);
         // close the connection

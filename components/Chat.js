@@ -108,7 +108,7 @@ export default class Chat extends React.Component {
           isConnected: false,
         });
         this.getMessages();
-      }
+        }
     });
   }
   onCollectionUpdate = (querySnapshot) => {
@@ -248,7 +248,7 @@ export default class Chat extends React.Component {
   render() {
     // Defining variables from Start screen
     let { name, colorSelect } = this.props.route.params;
-    let { messages, uid } = this.state;
+    let { messages } = this.state;
     // Set a default username in case the user didn't enter one
     //if (!user || user === '') user.name = 'User';
     // Display user's name in the navbar at the top of the chat screen
