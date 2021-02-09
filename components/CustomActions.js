@@ -85,8 +85,8 @@ export default class CustomActions extends React.Component {
           if (result) {
             this.props.onSend({ 
               location: {
-                latitude:location.coords.latitude,
-                longitude: location.coords.longitude,
+                latitude:result.coords.latitude,
+                longitude: result.coords.longitude,
               },
             })
           }   

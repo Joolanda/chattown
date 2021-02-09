@@ -276,9 +276,7 @@ export default class Chat extends React.Component {
           user={this.state.user}
           image={this.state.image}
         />
-        {Platform.OS === "android" ? (
-          <KeyboardAvoidingView behavior="height" />
-        ) : null}
+        { Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
     )
   }
