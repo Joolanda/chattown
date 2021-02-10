@@ -41,8 +41,8 @@ export default class Chat extends React.Component {
     if (!firebase.apps.length) {
       firebase.initializeApp({
         // insert my Firestore database credentials here!
-        // firebaseConfig =
-        
+        // firebaseConfig =   
+             
         apiKey: "AIzaSyB1qQS4FD9L56EFpl_7kZ7K0jEgJXMcnLk",
         authDomain: "chattownapp.firebaseapp.com",
         projectId: "chattownapp",
@@ -308,7 +308,12 @@ export default class Chat extends React.Component {
     return null;
   }
 
-  // give CustomAction Class a render function that renders the action button
+  /**
+   * Renders the action '+' button
+   * @function renderCustomActions
+   * @param {*} props 
+   * @returns {InputToolbar}
+   */ 
   renderCustomActions = (props) => {
     return <CustomActions {...props}/>
   };
@@ -316,7 +321,7 @@ export default class Chat extends React.Component {
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
   render() {
-    // Defining variables from Start screen
+    // Defining variables from Start Screen
     let { name, colorSelect } = this.props.route.params;
     let { messages } = this.state;
     // Set a default username in case the user didn't enter one

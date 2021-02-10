@@ -20,7 +20,7 @@ export default class Start extends React.Component {
 
   render() {
   /**
-   * Display User's name in the navigation bar at the top of the chat screen
+   * Display user's name in the navigation bar at the top of the chat screen
    * User can choose a background color for the chat screen by touching a TouchableOpacity
    */
     return (
