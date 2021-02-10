@@ -88,7 +88,7 @@ export default class Chat extends React.Component {
     //Find out users connection status with NetInfo
     NetInfo.fetch().then((state) => {
       // Authenticates the user, setting the state to send messages and pass them.
-      var isConnected = state.isConnected;
+      let isConnected = state.isConnected;
       this.setState({
         isConnected,
       });
@@ -144,7 +144,7 @@ export default class Chat extends React.Component {
     // go through each document
     querySnapshot.forEach((doc) => {
       // get the QueryDocumentSnapshot's data
-      var data = doc.data();
+      let data = doc.data();
       messages.push({
         _id: data._id,
         text: data.text.toString(),
