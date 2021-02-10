@@ -11,7 +11,7 @@ const firebase = require("firebase");
 require("firebase/firestore");
 
 /**
- *  @class Chat
+ * @class Chat
  * @requires React
  * @requires React-native
  * @requires react-native-gifted-chat
@@ -19,8 +19,8 @@ require("firebase/firestore");
  * @requires firebase
  * @requires firestore
  */
+
 export default class Chat extends React.Component {
-  // Initializing the state in order to send, receive and display messages
   constructor(props) {
     super(props);
     // Initializing state for messages, user, user ID, image and location
@@ -56,17 +56,15 @@ export default class Chat extends React.Component {
     // create a reference to my messages collection of the database
     this.referenceMessageUser = null;
     this.referenceMessages = firebase.firestore().collection("messages");
-
-    // Initializing state for messages, user, user ID, image and location
   }
 
 /**
  * loads all messages from AsyncStorage
  * @async
  * @function getMessage
- * @return messages {Promise<string>} ,the data from storage
+ * @param {string} 
+ * @returns messages {Promise<string>} ,the data from storage
  */
-
   async getMessages() {
      // You need to create getMessages before you can use it: above componentDidMount()
     let messages = "";
@@ -79,7 +77,13 @@ export default class Chat extends React.Component {
       console.log(error.message);
     }
   }
-
+  /**
+   * @function componentDidMount
+   * NetInfo checks connection status of the user
+   * Set state accordingly
+   * Use if-statement to make sure that references aren't undefined or null
+   * 
+   */
   async componentDidMount() {
     //Find out users connection status with NetInfo
     NetInfo.fetch().then((state) => {
@@ -89,7 +93,6 @@ export default class Chat extends React.Component {
         isConnected,
       });
       if (isConnected) {
-        // use if statement to make sure that references aren't undefined or null. (Always check this).
         this.authUnsubscribe = firebase
           .auth()
           .onAuthStateChanged(async (user) => {
@@ -125,6 +128,17 @@ export default class Chat extends React.Component {
         }
     });
   }
+  /**
+   * Updates state with new message
+   * @function onCollectionUpdate
+   * @param {*} querySnapshot 
+   * @param {string} _id
+   * @param {string} text
+   * @param {date} createdAt
+   * @param {string} user
+   * @param {string} image - uri of image
+   * @param {number} location geo data
+   */
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
     // go through each document
@@ -148,7 +162,7 @@ export default class Chat extends React.Component {
       messages,
     });
   };
-// disconnect on closing the app
+  // disconnect on closing the app
   componentWillUnmount() {
     if (this.state.isConnected) {
       // stop listening to authentication
@@ -157,8 +171,13 @@ export default class Chat extends React.Component {
       this.unsubscribe();
     }
   }
-  // function onSend is called upon sending a message in order to store the message
-  // "previousState" references the component's state at the time the change is applied.
+
+  /**
+   * function onSend is called upon sending a message in order to store the message.
+   * "previousState" references the component's state at the time the change is applied.
+   * @param {*} messages 
+   * @returns {state}
+   */
   onSend(messages = []) {
     this.setState(
       (previousState) => ({
@@ -171,8 +190,18 @@ export default class Chat extends React.Component {
     );
   }
 
+  /**
+   * Add new messages to the chat history.
+   * Push messages to firestore database.
+   * @function addMessages
+   * @param {number} _id
+   * @param {string} text
+   * @param {date} createdAt
+   * @param {string} user
+   * @param {image} image
+   * @param {number} location geo data
+   */
   addMessages = () => {
-    // add new messages to the chat history. Push messages to firestore database
     const message = this.state.messages[0];
     this.referenceMessages.add({
       _id: message._id,
@@ -185,7 +214,12 @@ export default class Chat extends React.Component {
   };
 
   // Async functions:
-  // save messages to async storage
+  /**
+   * Save messages to async storage
+   * @function saveMessages
+   * @async
+   * @returns {Promise<string>} stringifies messages
+   */
   async saveMessages() {
     try {
       await AsyncStorage.setItem(
@@ -197,7 +231,11 @@ export default class Chat extends React.Component {
     }
   }
 
-  // delete messages to async storage
+  /**
+  * Deletes messages from async storage
+  * @function deleteMessage
+  * @async
+  */
   async deleteMessage() {
     try {
       await AsyncStorage.removeItem("messages");
@@ -206,7 +244,12 @@ export default class Chat extends React.Component {
     }
   }
 
-  // Customize styling of the chat bubble like background color
+  /**
+   * Customize styling of the chat bubble like background color
+   * @function renderBubble
+   * @param {*} props 
+   * @returns {Bubble}
+   */
   renderBubble(props) {
     return (
       <Bubble
@@ -222,6 +265,13 @@ export default class Chat extends React.Component {
       />
     );
   }
+  
+  /**
+  * Renders the action '+' button
+  * @function renderInputToolbar
+  * @param {*} props 
+  * @returns {InputToolbar}
+  */
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
@@ -230,8 +280,14 @@ export default class Chat extends React.Component {
       );
     }
   }
- // check if current message contains location data
- renderCustomView(props) {
+  
+  /**
+  * Renders MapView if current message contains location data
+  * @function renderCustomView
+  * @param {*} props 
+  * @returns {MapView}
+  */
+  renderCustomView(props) {
    const { currentMessage } = props;
    if (currentMessage.location) {
      return (
@@ -269,6 +325,7 @@ export default class Chat extends React.Component {
     this.props.navigation.setOptions({ title: name });
 
     return (
+      // Styling chat screen
       <View
         style={{
           flex: 1,
