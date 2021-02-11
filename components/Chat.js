@@ -1,14 +1,26 @@
-import React from "react";
-import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
-import { View, Text, Platform, KeyboardAvoidingView } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import NetInfo from "@react-native-community/netinfo";
-import CustomActions from "./CustomActions";
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable no-empty */
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable prefer-const */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable no-underscore-dangle */
+import React from 'react';
+import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { View, Platform, KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 import MapView from 'react-native-maps';
+import CustomActions from './CustomActions';
 
 // Importing Firebase
-const firebase = require("firebase");
-require("firebase/firestore");
+const firebase = require('firebase');
+require('firebase/firestore');
 
 /**
  * @class Chat
@@ -27,12 +39,12 @@ export default class Chat extends React.Component {
     this.state = {
       messages: [],
       user: {
-        _id: "",
-        avatar: "",
-        name: "",
+        _id: '',
+        avatar: '',
+        name: '',
       },
-      uid: 0, 
-      loggedInText: "",
+      uid: 0,
+      loggedInText: '',
       image: null,
       location: null,
       isConnected: false,
@@ -41,54 +53,33 @@ export default class Chat extends React.Component {
     if (!firebase.apps.length) {
       firebase.initializeApp({
         // insert my Firestore database credentials here!
-        // firebaseConfig =   
-             
-        apiKey: "AIzaSyB1qQS4FD9L56EFpl_7kZ7K0jEgJXMcnLk",
-        authDomain: "chattownapp.firebaseapp.com",
-        projectId: "chattownapp",
-        storageBucket: "chattownapp.appspot.com",
-        messagingSenderId: "759665951924",
-        appId: "1:759665951924:web:9d5b057d27eb78d51cc3e1",
-        measurementId: "G-9EJECEB77W"
-      })
+        // firebaseConfig =
+        apiKey: 'AIzaSyB1qQS4FD9L56EFpl_7kZ7K0jEgJXMcnLk',
+        authDomain: 'chattownapp.firebaseapp.com',
+        projectId: 'chattownapp',
+        storageBucket: 'chattownapp.appspot.com',
+        messagingSenderId: '759665951924',
+        appId: '1:759665951924:web:9d5b057d27eb78d51cc3e1',
+        measurementId: 'G-9EJECEB77W',
+      });
     }
 
     // create a reference to my messages collection of the database
     this.referenceMessageUser = null;
-    this.referenceMessages = firebase.firestore().collection("messages");
+    this.referenceMessages = firebase.firestore().collection('messages');
   }
 
-/**
- * loads all messages from AsyncStorage
- * @async
- * @function getMessage
- * @param {string} 
- * @returns messages {Promise<string>} ,the data from storage
- */
-  async getMessages() {
-     // You need to create getMessages before you can use it: above componentDidMount()
-    let messages = "";
-    try {
-      messages = (await AsyncStorage.getItem("messages")) || [];
-      this.setState({
-        messages: JSON.parse(messages),
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
   /**
    * @function componentDidMount
    * NetInfo checks connection status of the user
    * Set state accordingly
    * Use if-statement to make sure that references aren't undefined or null
-   * 
    */
   async componentDidMount() {
-    //Find out users connection status with NetInfo
+    // Find out users connection status with NetInfo
     NetInfo.fetch().then((state) => {
       // Authenticates the user, setting the state to send messages and pass them.
-      let isConnected = state.isConnected;
+      const { isConnected } = state;
       this.setState({
         isConnected,
       });
@@ -109,7 +100,7 @@ export default class Chat extends React.Component {
               isConnected: true,
               user: {
                 _id: user.uid,
-                avatar: "https://placeimg.com/140/140/any",
+                avatar: 'https://placeimg.com/140/140/any',
                 name: this.props.route.params.name,
               },
               loggedInText: `${this.props.route.params.name} has entered the chat`,
@@ -117,7 +108,7 @@ export default class Chat extends React.Component {
             });
             // delete original listener as you no longer need it
             this.unsubscribe = this.referenceMessages
-              .orderBy("createdAt", "desc")
+              .orderBy('createdAt', 'desc')
               .onSnapshot(this.onCollectionUpdate);
           });
       } else {
@@ -125,13 +116,24 @@ export default class Chat extends React.Component {
           isConnected: false,
         });
         this.getMessages();
-        }
+      }
     });
   }
+
+  // disconnect on closing the app
+  componentWillUnmount() {
+    if (this.state.isConnected) {
+    // stop listening to authentication
+      this.authUnsubscribe();
+      // stop listening for collectionchanges
+      this.unsubscribe();
+    }
+  }
+
   /**
    * Updates state with new message
    * @function onCollectionUpdate
-   * @param {*} querySnapshot 
+   * @param {*} querySnapshot
    * @param {string} _id
    * @param {string} text
    * @param {date} createdAt
@@ -154,7 +156,7 @@ export default class Chat extends React.Component {
           name: data.user.name,
           avatar: data.user.avatar,
         },
-        image: data.image || "",
+        image: data.image || '',
         location: data.location,
       });
     });
@@ -162,20 +164,11 @@ export default class Chat extends React.Component {
       messages,
     });
   };
-  // disconnect on closing the app
-  componentWillUnmount() {
-    if (this.state.isConnected) {
-      // stop listening to authentication
-      this.authUnsubscribe();
-      //stop listening for collectionchanges
-      this.unsubscribe();
-    }
-  }
 
   /**
    * function onSend is called upon sending a message in order to store the message.
    * "previousState" references the component's state at the time the change is applied.
-   * @param {*} messages 
+   * @param {*} messages
    * @returns {state}
    */
   onSend(messages = []) {
@@ -186,8 +179,28 @@ export default class Chat extends React.Component {
       () => {
         this.addMessages();
         this.saveMessages();
-      }
+      },
     );
+  }
+
+  /**
+   * loads all messages from AsyncStorage
+   * @async
+   * @function getMessage
+   * @param {string}
+   * @returns messages {Promise<string>} ,the data from storage
+   */
+  async getMessages() {
+    // You need to create getMessages before you can use it: above componentDidMount()
+    let messages = '';
+    try {
+      messages = (await AsyncStorage.getItem('messages')) || [];
+      this.setState({
+        messages: JSON.parse(messages),
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   /**
@@ -205,10 +218,10 @@ export default class Chat extends React.Component {
     const message = this.state.messages[0];
     this.referenceMessages.add({
       _id: message._id,
-      text: message.text || "",
+      text: message.text || '',
       createdAt: message.createdAt,
       user: message.user,
-      image: message.image || "",
+      image: message.image || '',
       location: message.location || null,
     });
   };
@@ -223,8 +236,8 @@ export default class Chat extends React.Component {
   async saveMessages() {
     try {
       await AsyncStorage.setItem(
-        "messages",
-        JSON.stringify(this.state.messages)
+        'messages',
+        JSON.stringify(this.state.messages),
       );
     } catch (error) {
       console.log(error.message);
@@ -238,7 +251,7 @@ export default class Chat extends React.Component {
   */
   async deleteMessage() {
     try {
-      await AsyncStorage.removeItem("messages");
+      await AsyncStorage.removeItem('messages');
     } catch (error) {
       console.log(error.message);
     }
@@ -247,7 +260,7 @@ export default class Chat extends React.Component {
   /**
    * Customize styling of the chat bubble like background color
    * @function renderBubble
-   * @param {*} props 
+   * @param {*} props
    * @returns {Bubble}
    */
   renderBubble(props) {
@@ -256,53 +269,55 @@ export default class Chat extends React.Component {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#3dd8ff",
+            backgroundColor: '#3dd8ff',
           },
           left: {
-            backgroundColor: "#ff3dd8",
+            backgroundColor: '#ff3dd8',
           },
         }}
       />
     );
   }
-  
+
   /**
   * Renders the action '+' button
   * @function renderInputToolbar
-  * @param {*} props 
+  * @param {*} props
   * @returns {InputToolbar}
   */
   renderInputToolbar(props) {
-    if (this.state.isConnected == false) {
+    if (this.state.isConnected === false) {
     } else {
-      return ( 
-      <InputToolbar {...props} />
+      return (
+        <InputToolbar {...props} />
       );
     }
   }
-  
+
   /**
   * Renders MapView if current message contains location data
   * @function renderCustomView
-  * @param {*} props 
+  * @param {*} props
   * @returns {MapView}
   */
   renderCustomView(props) {
-   const { currentMessage } = props;
-   if (currentMessage.location) {
-     return (
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
         <MapView
-            style={{width: 150,
-              height: 100,
-              borderRadius: 13,
-              margin: 3}}
-            region={{
-              latitude: currentMessage.location.latitude,
-              longitude: currentMessage.location.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3,
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
       );
     }
     return null;
@@ -311,12 +326,10 @@ export default class Chat extends React.Component {
   /**
    * Renders the action '+' button
    * @function renderCustomActions
-   * @param {*} props 
+   * @param {*} props
    * @returns {InputToolbar}
-   */ 
-  renderCustomActions = (props) => {
-    return <CustomActions {...props}/>
-  };
+   */
+  renderCustomActions = (props) => <CustomActions {...props} />;
 
   // Wrap entire GiftedChat component into a view and add condition for KeyboardAvoidingView
   // Initializing state user
@@ -325,7 +338,7 @@ export default class Chat extends React.Component {
     let { name, colorSelect } = this.props.route.params;
     let { messages } = this.state;
     // Set a default username in case the user didn't enter one
-    //if (!user || user === '') user.name = 'User';
+    // if (!user || user === '') user.name = 'User';
     // Display user's name in the navbar at the top of the chat screen
     this.props.navigation.setOptions({ title: name });
 
@@ -334,13 +347,10 @@ export default class Chat extends React.Component {
       <View
         style={{
           flex: 1,
-          color: "#fff",
+          color: '#fff',
           backgroundColor: colorSelect,
         }}
       >
-        {/* <Text style={{ color:'#fff', marginTop: 50,  alignSelf: 'center',}} > Hey { name}, nice background!</Text> */}
-        {/* <Text style={{ color:'#fff', marginTop: 50,  alignSelf: 'center',}} > {this.state.loggedInText}</Text> */}
-
         {/* rendering chat interface with gifted Chat component, a third party tool */}
         <GiftedChat
           renderInputToolbar={this.renderInputToolbar.bind(this)}
@@ -348,12 +358,13 @@ export default class Chat extends React.Component {
           renderActions={this.renderCustomActions.bind(this)}
           renderCustomView={this.renderCustomView.bind(this)}
           messages={messages}
+          // eslint-disable-next-line no-shadow
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
           image={this.state.image}
         />
-        { Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
+        { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
-    )
+    );
   }
 }
