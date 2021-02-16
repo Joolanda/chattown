@@ -3,6 +3,8 @@
 A chat app for mobile devices using React Native, Expo, Google's Firebase/Firestore and gifted-chat library.
 The app will provide users with a chat interface and the possibility to share images (take a picture or choose from media library) and their location with others.
 
+![code to be replaced](/assets/testing_chat.png)
+
 ##### Key Features
 - Select background color before starting a chat
 - Ask for permission to use location data and share images
