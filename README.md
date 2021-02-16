@@ -33,7 +33,11 @@ Storage of realtime conversations in the Firestore Database. With [Firebase](htt
 ```sh
 $ npm install --save firebase@7.9.0
 ```
-Follow the instructions of Google Firebase. Wenn creating your project, choose "Database and not real-time database. Starting a collection in [Firebase](https://firebase.google.com/docs/firestore/using-console) is pretty straightforward. I will include all steps in an updated version of this ReadMe file. But for now, don't forget to choose auto ID. Make sure the name and fields matches with your chat app code. Referencing the app with your own credentials..etc. 
+Follow the instructions of Google Firebase. Wenn creating your project, choose "Database and not real-time database. Starting a collection in [Firebase](https://firebase.google.com/docs/firestore/using-console) is pretty straightforward. I will include all steps in an updated version of this ReadMe file. But for now, don't forget to choose auto ID. Make sure the name and fields matches with your chat app code...etc. 
+
+Referencing the app with your own credentials, like so:
+https://
+Go to your project in the terminal and run npm start or expo start. Et violà!
 
 #### Dependencies 
  - "@react-native-community/async-storage",
@@ -55,7 +59,7 @@ Follow the instructions of Google Firebase. Wenn creating your project, choose "
  -  "react-native-gifted-chat",
  - "react-native-maps",
  - "react-native-reanimated",
- - "react-native-safe-area-context",
+ - "react-native-safe-arecrdea-context",
  - "react-native-screens,
  - "react-native-web",
  - "react-navigation"
