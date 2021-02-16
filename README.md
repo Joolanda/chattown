@@ -72,6 +72,6 @@ The app uses [GiftedChat] (https://github.com/FaridSafi/react-native-gifted-chat
 #### Project Management
 Using a simple [Kanban Board](https://trello.com/b/51GCsgP5/native-react-chat-app) to visualize and optimize my workflow. Contain the user stories, story points for time estimation, and other handoff deliverables. 
 
-*Etcetera...currently working on this README file*
+*currently working on this README file*
 
  ## Happy Coding!
