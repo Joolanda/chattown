@@ -35,7 +35,7 @@ $ npm install --save firebase@7.9.0
 ```
 Follow the instructions of Google Firebase. Wenn creating your project, choose "Database and not real-time database. Starting a collection in [Firebase](https://firebase.google.com/docs/firestore/using-console) is pretty straightforward. I will include all steps in an updated version of this ReadMe file. But for now, don't forget to choose auto ID. Make sure the name and fields matches with your chat app code...etc. 
 
-Referencing the app with your own credentials, like so:
+Referencing the app in Chat.js with your own credentials, like so:
 ![code to be replaced](/assets/credentials_firestore.png)
 Go to your project in the terminal and run npm start or expo start. Et violà!
 
