@@ -54,13 +54,13 @@ export default class Chat extends React.Component {
       firebase.initializeApp({
         // insert my Firestore database credentials here!
         // firebaseConfig =
-        apiKey: 'AIzaSyB1qQS4FD9L56EFpl_7kZ7K0jEgJXMcnLk',
-        authDomain: 'chattownapp.firebaseapp.com',
-        projectId: 'chattownapp',
-        storageBucket: 'chattownapp.appspot.com',
-        messagingSenderId: '759665951924',
-        appId: '1:759665951924:web:9d5b057d27eb78d51cc3e1',
-        measurementId: 'G-9EJECEB77W',
+        apiKey: "AIzaSyADUhSkyP-cc43fU9TYUeaNG6klBiaU78s",
+        authDomain: "chat-town-app.firebaseapp.com",
+        projectId: "chat-town-app",
+        storageBucket: "chat-town-app.appspot.com",
+        messagingSenderId: "675503354374",
+        appId: "1:675503354374:web:dceb8dd1ba687938238987",
+        measurementId: "G-WH1S538D21"
       });
     }
 
